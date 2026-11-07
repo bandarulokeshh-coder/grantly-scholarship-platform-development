@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Check } from "lucide-react";
+import { Check, WifiOff } from "lucide-react";
 
 import { BrandMark } from "@/components/layout/BrandMark";
 import { NAV_ITEMS } from "@/components/layout/nav-items";
@@ -13,9 +14,36 @@ import { cn } from "@/lib/cn";
 export function SiteHeader() {
   const pathname = usePathname();
   const { profile, ready } = useGrantly();
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-canvas/90 backdrop-blur">
+      {isOffline && (
+        <div className="mx-auto w-full max-w-6xl px-4 py-1.5">
+          <div className="flex items-center justify-between gap-2 bg-warning-soft/50 border border-warning-soft/30 rounded-lg px-3 py-1.5 text-xs font-semibold text-warning">
+            <WifiOff aria-hidden="true" size={12} className="shrink-0" />
+            <span>You are offline — changes save locally and sync when reconnected.</span>
+            <button
+              aria-label="Dismiss offline banner"
+              className="focus-ring p-0.5 rounded text-warning hover:bg-warning-soft/30"
+              onClick={() => setIsOffline(false)}
+            >
+              <span className="sr-only">Dismiss offline banner</span>
+            </button>
+          </div>
+        </div>
+      )}
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6">
         <Link
           href="/"

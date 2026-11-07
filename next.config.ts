@@ -4,13 +4,22 @@ const contentSecurityPolicy = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data:",
+  "img-src 'self' data: https:",
   "font-src 'self'",
-  "connect-src 'self'",
+  "connect-src 'self' https:",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
 ].join("; ");
+
+const externalDomains = [
+  "scholarships.gov.in",
+  "reliancefoundation.org",
+  "sitaramjindalfoundation.org",
+  "vidyasaarathi.co.in",
+  "jntataendowment.org",
+  "tatatrusts.org",
+];
 
 const securityHeaders = [
   { key: "Content-Security-Policy", value: contentSecurityPolicy },
@@ -26,11 +35,31 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
+  },
+  images: {
+    remotePatterns: externalDomains.map((domain) => ({
+      protocol: "https",
+      hostname: domain,
+      pathname: "/**",
+    })),
+  },
   async headers() {
     return [
       {
         source: "/:path*",
-        headers: securityHeaders,
+        headers: [
+          ...securityHeaders,
+          {
+            key: "X-DNS-Prefetch-Control",
+            value: "on",
+          },
+          ...externalDomains.map((domain) => ({
+            key: "Link",
+            value: `<https://${domain}>; rel=dns-prefetch`,
+          })),
+        ],
       },
     ];
   },

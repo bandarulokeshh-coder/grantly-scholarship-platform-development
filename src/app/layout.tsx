@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import type { ReactNode } from "react";
 
 import "./globals.css";
@@ -9,6 +10,15 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { GrantlyProvider } from "@/components/providers/GrantlyProvider";
 import { themeInitScript } from "@/lib/theme-script";
+
+const externalDomains = [
+  "scholarships.gov.in",
+  "reliancefoundation.org",
+  "sitaramjindalfoundation.org",
+  "vidyasaarathi.co.in",
+  "jntataendowment.org",
+  "tatatrusts.org",
+];
 
 const inter = Inter({
   subsets: ["latin"],
@@ -64,7 +74,29 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
-        <script>{themeInitScript}</script>
+        {/* Non-blocking theme init: applied after interactive to avoid parse blocking */}
+        <Script
+          id="grantly-theme-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
+        {externalDomains.map((domain) => (
+          <link
+            key={domain}
+            rel="preconnect"
+            href={`https://${domain}`}
+            crossOrigin="anonymous"
+          />
+        ))}
+        <link rel="manifest" href="/manifest.json" />
+        {/* Service worker registration: offline shell caching */}
+        <Script
+          id="grantly-sw-register"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){if('serviceWorker'innavigator){navigator.serviceWorker.register('/sw.js').then(function(reg){console.log('Grantly SW registered',reg.scope)}).catch(function(err){console.error('Grantly SW registration failed',err)}})}}();`,
+          }}
+        />
       </head>
       <body className="min-h-dvh bg-canvas font-sans text-ink antialiased">
         <GrantlyProvider>
