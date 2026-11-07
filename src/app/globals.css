@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-line: var(--line);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-on-primary: var(--on-primary);
+  --color-link: var(--link);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-focus: var(--focus);
+
+  --shadow-soft: 0 1px 2px rgb(16 24 40 / 0.04), 0 12px 32px -16px rgb(16 24 40 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(16 24 40 / 0.05), 0 22px 48px -24px rgb(16 24 40 / 0.28);
+}
+
+:root {
+  --canvas: #f4f6fb;
+  --surface: #ffffff;
+  --surface-muted: #eef1f8;
+  --ink: #0f172a;
+  --ink-soft: #3b4759;
+  --ink-faint: #5a6577;
+  --line: #dbe1ec;
+  --primary: #3730a3;
+  --primary-hover: #2a2485;
+  --primary-soft: #eceefc;
+  --on-primary: #ffffff;
+  --link: #322b96;
+  --accent: #0f766e;
+  --accent-soft: #d7f3ee;
+  --warning: #92400e;
+  --warning-soft: #fdf0cf;
+  --danger: #b3261e;
+  --danger-soft: #fde8e6;
+  --success: #0f6b45;
+  --success-soft: #dcf5e9;
+  --focus: #1d4ed8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --canvas: #080e1a;
+    --surface: #111a2a;
+    --surface-muted: #182338;
+    --ink: #eef2fb;
+    --ink-soft: #c8d2e4;
+    --ink-faint: #a3b0c6;
+    --line: #2a374f;
+    --primary: #4f46e5;
+    --primary-hover: #6366f1;
+    --primary-soft: #1c2350;
+    --on-primary: #ffffff;
+    --link: #b9c0ff;
+    --accent: #5eead4;
+    --accent-soft: #10352f;
+    --warning: #fcd34d;
+    --warning-soft: #3d2c0c;
+    --danger: #fca5a5;
+    --danger-soft: #43191a;
+    --success: #6ee7b7;
+    --success-soft: #0f2f26;
+    --focus: #c7d2fe;
+  }
+}
+
+:root[data-theme="dark"] {
+  --canvas: #080e1a;
+  --surface: #111a2a;
+  --surface-muted: #182338;
+  --ink: #eef2fb;
+  --ink-soft: #c8d2e4;
+  --ink-faint: #a3b0c6;
+  --line: #2a374f;
+  --primary: #4f46e5;
+  --primary-hover: #6366f1;
+  --primary-soft: #1c2350;
+  --on-primary: #ffffff;
+  --link: #b9c0ff;
+  --accent: #5eead4;
+  --accent-soft: #10352f;
+  --warning: #fcd34d;
+  --warning-soft: #3d2c0c;
+  --danger: #fca5a5;
+  --danger-soft: #43191a;
+  --success: #6ee7b7;
+  --success-soft: #0f2f26;
+  --focus: #c7d2fe;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--canvas);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    line-height: 1.55;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background-color: var(--primary-soft);
+    color: var(--ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@utility surface-card {
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-soft);
+}
+
+@utility focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+
+  &:focus-visible {
+    outline-color: var(--focus);
+  }
+}
+
+@utility text-balance-pretty {
+  text-wrap: pretty;
+}

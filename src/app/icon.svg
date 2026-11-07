@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Grantly">
+  <rect width="64" height="64" rx="16" fill="#3730a3"/>
+  <path d="M32 16 52 26 32 36 12 26Z" fill="#ffffff" opacity="0.95"/>
+  <path d="M20 31v10c0 4 5.4 7 12 7s12-3 12-7V31l-12 6Z" fill="#a5b4fc"/>
+  <path d="M52 26v13" stroke="#5eead4" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="52" cy="42" r="3.2" fill="#5eead4"/>
+</svg>
